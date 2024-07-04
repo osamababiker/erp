@@ -57,11 +57,13 @@ class AccountService implements AccountHandler
         $netMovement = $calculatedBalances['net_movement'];
 
         if (in_array($account->category, [AccountCategory::Expense, AccountCategory::Revenue], true)) {
+            if(!$account->currency_code) $account->currency_code = "USD";
             return new Money($netMovement, $account->currency_code);
         }
 
         $endingBalance = $startingBalances['starting_balance'] + $netMovement;
 
+        if(!$account->currency_code) $account->currency_code = "USD";
         return new Money($endingBalance, $account->currency_code);
     }
 
